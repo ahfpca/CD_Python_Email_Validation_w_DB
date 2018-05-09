@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .error {
+            color: red;
+        }
+        .message {
+            color: green;
+        }
+
+        .label {
+            color: blue;
+        }
+
+        .field {
+            color: black;
+        }
+    </style>
+    <title>Email Validation w/ DB</title>
+</head>
+<body>
+    <br>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="row"> <!-- Validation Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="{{ category }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            </div>
+            <br>
+            <form action="/register" method="post"> <!-- Data Entry -->
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <label class="col-2 label" for="name">Email Address:</label>
+                        <input class="col-6" type="text" name="email" id="email" placeholder="" value="{{ session["email"] }}">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-7"></div>
+                        <button class="col-2" type="submit">Add</button>
+                        <div class="col-1"></div>
+                    </div>
+            </form>
+            <br>
+            <div class="row"> <!-- List of emails -->
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Email Address</th>
+                            <th>Created</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rec in data: %}
+                        <tr>
+                            <td>{{ rec.email }}</td>
+                            <td>{{ rec.created_at }}</td>
+                            <td><a href="/delete/{{ rec.id }}">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>
